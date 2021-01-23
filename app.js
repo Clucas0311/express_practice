@@ -4,6 +4,8 @@ const express = require('express');
 // to create an express application call express
 const app = express();
 
+const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+
 // to use the pug method use app.set
 
 app.set('view engine', 'pug');
@@ -16,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/card', (req, res) => {
-	res.render('card', { prompt: "Who is buried in Grant's tomb?", hint: 'Think about whose Tomb it is' });
+	res.render('card', { prompt: "Who is buried in Grant's tomb?", colors });
 });
 // set up the development server
 // const PORT = 3000;
