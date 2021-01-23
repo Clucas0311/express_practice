@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
 app.get('/card', (req, res) => {
 	res.render('card', { prompt: "Who is buried in Grant's tomb?", colors });
 });
+
+app.get('/hello', (req, res) => {
+	res.render('hello');
+});
 // set up the development server
 // const PORT = 3000;
 app.listen(3000, () => {
