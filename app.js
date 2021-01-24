@@ -14,6 +14,21 @@ const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
 
 app.set('view engine', 'pug');
 
+app.use(
+	(req, res, next) => {
+		req.message = 'This message made it!';
+		next();
+	},
+	(req, res, next) => {
+		console.log(req.message);
+		next();
+	}
+);
+app.use((req, res, next) => {
+	console.log('Two');
+	next();
+});
+
 // HTTP verb - because it represents what the client what the user wants to do
 // route route - indicate it with the / in the first parameter,
 // second parameter will take in anonymous call back a request and response
@@ -42,7 +57,11 @@ app.post('/hello', (req, res) => {
 	res.cookie('username', req.body.username);
 	res.redirect('/');
 });
-// set up the development server
+app.post('/goodbye', (req, res) => {
+	res.clearCookie('username');
+	res.redirect('/hello');
+});
+// set up the z                                                                                                 development server
 // const PORT = 3000;
 app.listen(3000, () => {
 	console.log('The Application is Running On localhost 3000!');
