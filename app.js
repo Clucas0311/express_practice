@@ -8,7 +8,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+// const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
 
 // to use the pug method use app.set
 
@@ -20,38 +20,11 @@ app.set('view engine', 'pug');
 // 	next(err);
 // });
 
-// HTTP verb - because it represents what the client what the user wants to do
-// route route - indicate it with the / in the first parameter,
-// second parameter will take in anonymous call back a request and response
-app.get('/', (req, res) => {
-	const name = req.cookies.username;
-	if (name) {
-		res.render('index', { name });
-	} else {
-		res.redirect('/hello');
-	}
-});
+const mainRoutes = require('./routes');
+const cardRoutes = require('./routes/cards');
 
-app.get('/card', (req, res) => {
-	res.render('card', { prompt: "Who is buried in Grant's tomb?", colors });
-});
-
-app.get('/hello', (req, res) => {
-	const name = req.cookies.username;
-	if (name) {
-		res.redirect('/');
-	}
-	res.render('hello');
-});
-// when you need to change something
-app.post('/hello', (req, res) => {
-	res.cookie('username', req.body.username);
-	res.redirect('/');
-});
-app.post('/goodbye', (req, res) => {
-	res.clearCookie('username');
-	res.redirect('/hello');
-});
+app.use(mainRoutes);
+app.use('/cards', cardRoutes);
 
 app.use((req, res, next) => {
 	const err = new Error('Not Found');
