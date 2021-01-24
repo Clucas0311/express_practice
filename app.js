@@ -1,8 +1,12 @@
 // grab the express module by requiring at and add it to the express varible
 const express = require('express');
-
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const e = require('express');
 // to create an express application call express
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
 
@@ -14,7 +18,12 @@ app.set('view engine', 'pug');
 // route route - indicate it with the / in the first parameter,
 // second parameter will take in anonymous call back a request and response
 app.get('/', (req, res) => {
-	res.render('index');
+	const name = req.cookies.username;
+	if (name) {
+		res.render('index', { name });
+	} else {
+		res.redirect('/hello');
+	}
 });
 
 app.get('/card', (req, res) => {
@@ -22,7 +31,16 @@ app.get('/card', (req, res) => {
 });
 
 app.get('/hello', (req, res) => {
+	const name = req.cookies.username;
+	if (name) {
+		res.redirect('/');
+	}
 	res.render('hello');
+});
+// when you need to change something
+app.post('/hello', (req, res) => {
+	res.cookie('username', req.body.username);
+	res.redirect('/');
 });
 // set up the development server
 // const PORT = 3000;

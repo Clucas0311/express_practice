@@ -1,13 +1,6 @@
-docutype
-html(lang="en")
-    head
-        meta(charset="UTF-8")
-        meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        title Flash Cards
-    body
-        header 
-            h1 Flash Cards
-        section#content
-            h2 Welcome, student!
-            footer
-            p An app to help you study
+extends layout.pug
+
+block content
+    section#content
+        h2 Welcome, #{name}!
+    
