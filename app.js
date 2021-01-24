@@ -14,20 +14,11 @@ const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
 
 app.set('view engine', 'pug');
 
-app.use(
-	(req, res, next) => {
-		req.message = 'This message made it!';
-		next();
-	},
-	(req, res, next) => {
-		console.log(req.message);
-		next();
-	}
-);
-app.use((req, res, next) => {
-	console.log('Two');
-	next();
-});
+// app.use((req, res, next) => {
+// 	console.log('Hello');
+// 	const err = new Error('Oh noes!');
+// 	next(err);
+// });
 
 // HTTP verb - because it represents what the client what the user wants to do
 // route route - indicate it with the / in the first parameter,
@@ -60,6 +51,18 @@ app.post('/hello', (req, res) => {
 app.post('/goodbye', (req, res) => {
 	res.clearCookie('username');
 	res.redirect('/hello');
+});
+
+app.use((req, res, next) => {
+	const err = new Error('Not Found');
+	err.status = 404;
+	next(err);
+});
+
+app.use((err, req, res, next) => {
+	res.locals.error = err;
+	res.status(500);
+	res.render('error', err);
 });
 // set up the z                                                                                                 development server
 // const PORT = 3000;
